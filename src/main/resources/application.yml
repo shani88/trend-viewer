@@ -1,0 +1,26 @@
+spring:
+  data:
+    rest:
+      base-path: /
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:mysql://106.10.35.9:3306/trend_viewer?useUnicode=true&characterEncoding=utf8&jdbcCompliantTruncation=true&zeroDateTimeBehavior=convertToNull&connectTimeout=30000&socketTimeout=40000&serverTimezone=UTC
+    username: root
+    password: ahdkqhrl
+
+server:
+  port: 80
+
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: INFO
+    com.navercorp.ncr: DEBUG
+    java.sql: DEBUG
+  path: /home1/logs/trendviewer
+  file: /home1/logs/trendviewer/restservice.log
