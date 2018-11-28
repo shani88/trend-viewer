@@ -28,11 +28,11 @@ public class RestServiceApplicationTests {
     @Test
     public void test() {
         TestModel testModel = new TestModel();
-        testModel.setName("hello");
+        testModel.setName("BYE TEST");
 
-        assertThat(repository.findByNameIsLikeIgnoreCase("%hell%")).isEmpty();
+        assertThat(repository.findByNameIsLikeIgnoreCase("%bye%")).isEmpty();
         repository.save(testModel);
-        assertThat(repository.findByNameIsLikeIgnoreCase("%hell%")).hasSize(1);
+        assertThat(repository.findByNameIsLikeIgnoreCase("%bye%")).hasSize(1);
     }
 
 }
