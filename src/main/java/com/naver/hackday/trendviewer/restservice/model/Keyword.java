@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PUBLIC)
 @ToString
-class Keyword{
+public class Keyword{
     @Id
     @GeneratedValue
     @Column(name = "keyword_id")
