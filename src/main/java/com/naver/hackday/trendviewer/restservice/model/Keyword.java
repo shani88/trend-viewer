@@ -3,7 +3,8 @@ package com.naver.hackday.trendviewer.restservice.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class Keyword{
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private Date created_time;
+    private LocalDateTime createdTime;
     @Column(nullable = false)
     private int rank;
 
