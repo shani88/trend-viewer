@@ -3,7 +3,7 @@ package com.naver.hackday.trendviewer.restservice.openapi.naver;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNews;
+import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNewsModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,13 @@ public class NaverNewsAPITest {
 
   @Test
   public void requestDisplay5() {
-    NaverNews naverNews = naverNewsAPI.request("naver", "date", 5);
+    NaverNewsModel naverNews = naverNewsAPI.request("naver", "date", 5);
     assertThat(naverNews.getDisplay(), is(5));
   }
 
   @Test
   public void requestAPI() {
-    ResponseEntity<NaverNews> responseEntity = naverNewsAPI.requestAPI("naver", "date", 5);
+    ResponseEntity<NaverNewsModel> responseEntity = naverNewsAPI.requestAPI("naver", "date", 5);
     assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
   }
 

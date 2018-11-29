@@ -24,29 +24,27 @@ public class TrendKeywordAPI {
 
   private final static Logger logger = LoggerFactory.getLogger(TrendKeywordAPI.class);
 
-  private final static String API_URL = "http://106.10.35.9/trendKeyword";
+  private final static String API_URL = "http://106.10.35.9/trendKeyword?sort=createTime";
 
-  public List<TrendKeyword> request() {
+  public TrendKeyword request() {
     ResponseEntity<String> responseEntity = requestAPI();
+    TrendKeyword trendKeyword = null;
 
     if (responseEntity.getStatusCode() != HttpStatus.OK)
       throw new InternalAPIServerErrorException("no api response exception");
 
     String json = responseEntity.getBody();
-    List<TrendKeyword> trendKeywords = new ArrayList<>();
-
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(json, new TypeReference<HashMap<String, Object>>(){});
       Map<String, Object> embedded = (Map<String, Object>) map.get("_embedded");
       List<Map<String, Object>> keywordList = (List<Map<String, Object>>) embedded.get("trendKeyword");
-
-      trendKeywords = keywordList.stream().map(this::mapToTrendKeyword).collect(Collectors.toList());
+      trendKeyword = mapToTrendKeyword(keywordList.get(0));
     } catch (IOException e) {
       logger.error("mapper readValue exception");
     }
 
-    return trendKeywords;
+    return trendKeyword;
   }
 
   protected ResponseEntity<String> requestAPI() {
@@ -66,6 +64,7 @@ public class TrendKeywordAPI {
     for (String key : keywordStringList) {
       KeywordModel keyword = new KeywordModel(rank, key);
       keywords.add(keyword);
+      rank++;
     }
 
     trendKeyword.setCreatedTime((String) map.get("createdTime"));
