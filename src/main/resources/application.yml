@@ -1,19 +1,3 @@
-spring:
-  data:
-    rest:
-      base-path: /
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:mysql://106.10.35.9:3306/trend_viewer?useUnicode=true&characterEncoding=utf8&jdbcCompliantTruncation=true&zeroDateTimeBehavior=convertToNull&connectTimeout=30000&socketTimeout=40000&serverTimezone=UTC
-    username: root
-    password: ahdkqhrl
-
-server:
-  port: 8080
-
 logging:
   level:
     ROOT: INFO
@@ -24,3 +8,42 @@ logging:
     java.sql: DEBUG
   path: /home1/logs/trendviewer
   file: /home1/logs/trendviewer/restservice.log
+---
+
+spring:
+  profiles: prod
+  data:
+    rest:
+      base-path: /
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://106.10.35.9:3306/trend_viewer?useUnicode=true&characterEncoding=utf8&jdbcCompliantTruncation=true&zeroDateTimeBehavior=convertToNull&connectTimeout=30000&socketTimeout=40000&serverTimezone=UTC
+    username: root
+    password: ahdkqhrl
+
+server:
+  port: 80
+---
+
+spring:
+  profiles: dev
+  data:
+    rest:
+      base-path: /
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:trend_viewer
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8080
