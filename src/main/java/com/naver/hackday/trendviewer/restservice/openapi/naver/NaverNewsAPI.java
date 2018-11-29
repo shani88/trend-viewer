@@ -1,12 +1,16 @@
 package com.naver.hackday.trendviewer.restservice.openapi.naver;
 
+import com.naver.hackday.trendviewer.restservice.openapi.exception.InternalAPIServerErrorException;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNews;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class NaverNewsAPI {
 
   private static final String API_URL = "https://openapi.naver.com/v1/search/news.json";
@@ -15,8 +19,14 @@ public class NaverNewsAPI {
 
   private static final String CLIENT_SECRET = "g5hvicyrBF";
 
+  private static int a = 0;
+
   public NaverNews request(String query, String sort, int display) {
     ResponseEntity<NaverNews> naverNews = requestAPI(query, sort, display);
+
+    if (naverNews.getStatusCode() != HttpStatus.OK)
+      throw new InternalAPIServerErrorException("no api response exception");
+
     return naverNews.getBody();
   }
 

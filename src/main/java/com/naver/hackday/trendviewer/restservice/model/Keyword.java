@@ -1,5 +1,7 @@
 package com.naver.hackday.trendviewer.restservice.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,11 +24,20 @@ public class Keyword{
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created_time")
     private LocalDateTime createdTime;
     @Column(nullable = false)
     private int rank;
 
     @OneToMany(mappedBy="keyword", cascade=CascadeType.ALL)
-    private Set<NaverNews> naverNewsSet = new HashSet<>();
+    private List<NaverNews> naverNewsSet = new ArrayList<>();
+
+    @Builder
+    public Keyword(String name, LocalDateTime createdTime, int rank,
+        List<NaverNews> naverNewsSet) {
+        this.name = name;
+        this.createdTime = createdTime;
+        this.rank = rank;
+        this.naverNewsSet = naverNewsSet;
+    }
 }

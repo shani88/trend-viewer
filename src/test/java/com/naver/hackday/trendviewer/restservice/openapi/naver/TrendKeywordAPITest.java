@@ -7,17 +7,14 @@ import com.naver.hackday.trendviewer.restservice.openapi.naver.model.TrendKeywor
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class TrendKeywordAPITest {
 
+  @Autowired
   private TrendKeywordAPI api;
-
-  @Before
-  public void init() {
-    api = new TrendKeywordAPI();
-  }
 
   @Test
   public void callApiRequest() {
