@@ -3,6 +3,9 @@ package com.naver.hackday.trendviewer.restservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 @Entity
@@ -11,7 +14,7 @@ import java.util.Date;
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PUBLIC)
 @ToString
-class NaverNews {
+public class NaverNews {
     @Id
     @GeneratedValue
     @Column(name = "naver_news_id")
@@ -27,5 +30,6 @@ class NaverNews {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="keyword_id")
+    @JsonIgnore
     private Keyword keyword;
 }
