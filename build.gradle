@@ -30,6 +30,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-hateoas')
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.springframework.data:spring-data-rest-hal-browser')
+	compile group: 'com.google.apis', name: 'google-api-services-youtube', version: 'v3-rev206-1.25.0'
 	runtimeOnly('mysql:mysql-connector-java')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	compileOnly('org.projectlombok:lombok')
