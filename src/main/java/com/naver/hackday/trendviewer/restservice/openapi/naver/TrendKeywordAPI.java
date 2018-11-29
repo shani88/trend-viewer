@@ -2,6 +2,8 @@ package com.naver.hackday.trendviewer.restservice.openapi.naver;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.naver.hackday.trendviewer.restservice.openapi.exception.InternalAPIServerErrorException;
+import com.naver.hackday.trendviewer.restservice.openapi.naver.model.KeywordModel;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.TrendKeyword;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +14,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class TrendKeywordAPI {
 
   private final static Logger logger = LoggerFactory.getLogger(TrendKeywordAPI.class);
@@ -23,6 +28,10 @@ public class TrendKeywordAPI {
 
   public List<TrendKeyword> request() {
     ResponseEntity<String> responseEntity = requestAPI();
+
+    if (responseEntity.getStatusCode() != HttpStatus.OK)
+      throw new InternalAPIServerErrorException("no api response exception");
+
     String json = responseEntity.getBody();
     List<TrendKeyword> trendKeywords = new ArrayList<>();
 
@@ -49,9 +58,19 @@ public class TrendKeywordAPI {
   }
 
   private TrendKeyword mapToTrendKeyword(Map<String, Object> map) {
+    int rank = 1;
     TrendKeyword trendKeyword = new TrendKeyword();
+    List<String> keywordStringList = (List<String>) map.get("keywordList");
+    List<KeywordModel> keywords = new ArrayList<>();
+
+    for (String key : keywordStringList) {
+      KeywordModel keyword = new KeywordModel(rank, key);
+      keywords.add(keyword);
+    }
+
     trendKeyword.setCreatedTime((String) map.get("createdTime"));
-    trendKeyword.setKeywordList((List<String>) map.get("keywordList"));
+    trendKeyword.setKeywordList(keywords);
+
     return trendKeyword;
   }
 
