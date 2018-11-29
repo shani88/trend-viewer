@@ -11,4 +11,5 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "keyword", path = "keyword")
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     List<Keyword> findByCreatedTime(@Param("createdTime") LocalDateTime createdTime);
+    List<Keyword> findTop20ByOrderByCreatedTimeDesc();
 }
