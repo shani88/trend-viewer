@@ -1,7 +1,7 @@
 package com.naver.hackday.trendviewer.restservice.openapi.naver;
 
 import com.naver.hackday.trendviewer.restservice.openapi.exception.InternalAPIServerErrorException;
-import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNews;
+import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNewsModel;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,8 +21,8 @@ public class NaverNewsAPI {
 
   private static int a = 0;
 
-  public NaverNews request(String query, String sort, int display) {
-    ResponseEntity<NaverNews> naverNews = requestAPI(query, sort, display);
+  public NaverNewsModel request(String query, String sort, int display) {
+    ResponseEntity<NaverNewsModel> naverNews = requestAPI(query, sort, display);
 
     if (naverNews.getStatusCode() != HttpStatus.OK)
       throw new InternalAPIServerErrorException("no api response exception");
@@ -30,14 +30,14 @@ public class NaverNewsAPI {
     return naverNews.getBody();
   }
 
-  protected ResponseEntity<NaverNews> requestAPI(String query, String sort, int display) {
+  protected ResponseEntity<NaverNewsModel> requestAPI(String query, String sort, int display) {
     String requestUrl = createRequestUrl(query, sort, display);
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders header = new HttpHeaders();
     header.add("X-Naver-Client-Id", CLIENT_ID);
     header.add("X-Naver-Client-Secret", CLIENT_SECRET);
 
-    return restTemplate.exchange(requestUrl, HttpMethod.GET, new HttpEntity(header), NaverNews.class);
+    return restTemplate.exchange(requestUrl, HttpMethod.GET, new HttpEntity(header), NaverNewsModel.class);
   }
 
   private String createRequestUrl(String query, String sort, int display) {

@@ -66,6 +66,7 @@ public class TrendKeywordAPI {
     for (String key : keywordStringList) {
       KeywordModel keyword = new KeywordModel(rank, key);
       keywords.add(keyword);
+      rank++;
     }
 
     trendKeyword.setCreatedTime((String) map.get("createdTime"));
