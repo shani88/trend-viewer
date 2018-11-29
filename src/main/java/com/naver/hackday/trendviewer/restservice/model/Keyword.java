@@ -3,10 +3,9 @@ package com.naver.hackday.trendviewer.restservice.model;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -22,11 +21,11 @@ public class Keyword{
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created_time")
     private LocalDateTime createdTime;
     @Column(nullable = false)
     private int rank;
 
     @OneToMany(mappedBy="keyword", cascade=CascadeType.ALL)
-    private Set<NaverNews> naverNewsSet = new HashSet<>();
+    private List<NaverNews> naverNewsSet = new ArrayList<>();
 }
