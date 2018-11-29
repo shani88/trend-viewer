@@ -1,5 +1,6 @@
 package com.naver.hackday.trendviewer.restservice.model;
 
+import java.time.LocalDateTime;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,10 +27,20 @@ public class NaverNews {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private Date created_time;
+    private LocalDateTime createdTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="keyword_id")
     @JsonIgnore
     private Keyword keyword;
+
+    @Builder
+    public NaverNews(String title, String link, String description, LocalDateTime createdTime,
+        Keyword keyword) {
+        this.title = title;
+        this.link = link;
+        this.description = description;
+        this.createdTime = createdTime;
+        this.keyword = keyword;
+    }
 }
