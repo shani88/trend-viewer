@@ -23,6 +23,9 @@ spring:
     url: jdbc:mysql://106.10.35.9:3306/trend_viewer?useUnicode=true&characterEncoding=utf8&jdbcCompliantTruncation=true&zeroDateTimeBehavior=convertToNull&connectTimeout=30000&socketTimeout=40000&serverTimezone=UTC
     username: root
     password: ahdkqhrl
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
 
 server:
   port: 80
