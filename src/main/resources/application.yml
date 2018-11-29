@@ -1,4 +1,17 @@
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: INFO
+    com.navercorp.ncr: DEBUG
+    java.sql: DEBUG
+  path: /home1/logs/trendviewer
+  file: /home1/logs/trendviewer/restservice.log
+---
+
 spring:
+  profiles: prod
   data:
     rest:
       base-path: /
@@ -15,15 +28,25 @@ spring:
       maximum-pool-size: 10
 
 server:
-  port: 8080
+  port: 80
+---
 
-logging:
-  level:
-    ROOT: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.springframework.web: INFO
-    com.navercorp.ncr: DEBUG
-    java.sql: DEBUG
-  path: /home1/logs/trendviewer
-  file: /home1/logs/trendviewer/restservice.log
+spring:
+  profiles: dev
+  data:
+    rest:
+      base-path: /
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:trend_viewer
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8080

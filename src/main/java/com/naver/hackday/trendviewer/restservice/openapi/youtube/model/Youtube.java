@@ -1,24 +1,33 @@
 package com.naver.hackday.trendviewer.restservice.openapi.youtube.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.naver.hackday.trendviewer.restservice.model.Keyword;
+import lombok.*;
 
-@Getter
-@Setter
+import javax.persistence.*;
+
+
+@Entity
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Youtube {
+    @Id
+    @GeneratedValue
+    @Column(name = "youtube_id")
+    private Long id;
+    @Column(nullable = false)
+    private String title;
+    @Column(nullable = false)
+    private String thumbnail;
+    @Column(nullable = false)
+    private String url;
 
-  private String title;
-
-  private String thumbnail;
-
-  private String url;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="keyword_id")
+    @JsonIgnore
+    private Keyword keyword;
 }
