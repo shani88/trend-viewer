@@ -41,8 +41,6 @@ public class TrendKeywordService {
 
   @Transactional
   public void collectData() {
-    List<TrendKeyword> trendKeywords = trendKeywordAPI.request();
-
     saveTrendKeyword();
   }
 
@@ -62,14 +60,12 @@ public class TrendKeywordService {
   }
 
   protected void saveTrendKeyword() {
-    List<TrendKeyword> trendKeywords = trendKeywordAPI.request();
-    if (trendKeywords.size() == 0)
+    TrendKeyword trendKeyword = trendKeywordAPI.request();
+    if (trendKeyword == null)
       throw new NoContentsException("no contents");
 
-    for (TrendKeyword keyword : trendKeywords) {
-      List<Keyword> keywordList = keyword.toEntity();
+      List<Keyword> keywordList = trendKeyword.toEntity();
       for (Keyword key : keywordList)
         keywordRepository.save(key);
-    }
   }
 }

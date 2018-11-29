@@ -34,7 +34,7 @@ public class TrendKeywordServiceTest {
   public void saveTrendKeywords() {
     trendKeywordService.saveTrendKeyword();
     List<Keyword> keywordList = keywordRepository.findAll();
-    assertThat(keywordList.size(), is(400));
+    assertThat(keywordList.size(), is(20));
   }
 
 }
