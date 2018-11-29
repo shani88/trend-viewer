@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 public class Keyword{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "keyword_id")
     private Long id;
     @Column(nullable = false)

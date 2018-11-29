@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 public class NaverNews {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "naver_news_id")
     private Long id;
     @Column(nullable = false)
