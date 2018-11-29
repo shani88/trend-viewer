@@ -1,14 +1,12 @@
 package com.naver.hackday.trendviewer.restservice.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.*;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
