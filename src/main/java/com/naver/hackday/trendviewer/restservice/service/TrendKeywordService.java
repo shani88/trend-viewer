@@ -5,11 +5,16 @@ import com.naver.hackday.trendviewer.restservice.model.NaverNews;
 import com.naver.hackday.trendviewer.restservice.openapi.exception.NoContentsException;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.NaverNewsAPI;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.TrendKeywordAPI;
+import com.naver.hackday.trendviewer.restservice.openapi.naver.model.KeywordModel;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNewsItems;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNewsModel;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.TrendKeyword;
 import com.naver.hackday.trendviewer.restservice.openapi.youtube.YoutubeAPI;
+import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
 import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
+import com.naver.hackday.trendviewer.restservice.repository.NaverNewsRepository;
+import com.naver.hackday.trendviewer.restservice.repository.YoutubeRepository;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.slf4j.Logger;
@@ -25,7 +30,7 @@ public class TrendKeywordService {
 
   private static final String NEWS_SORTING = "date";
 
-  private static final int NEWS_DISPLAY = 5;
+  private static final int DISPLAY = 5;
 
   @Autowired
   private NaverNewsAPI naverNewsAPI;
@@ -38,28 +43,51 @@ public class TrendKeywordService {
 
   @Autowired
   private KeywordRepository keywordRepository;
+  
+  @Autowired
+  private NaverNewsRepository naverNewsRepository;
+  
+  @Autowired
+  private YoutubeRepository youtubeRepository;
 
   @Transactional
   public void collectData() {
-    saveTrendKeyword();
+	  List<KeywordModel> keywords = saveTrendKeyword();
+	  
+	  saveNewsData(keywords);		//추가
+	  saveYoutubeData(keywords);	//추가
   }
 
-  protected void saveNewsData(List<Keyword> keywords) {
-    for (Keyword keyword : keywords) {
-      String query = keyword.getName();
+  /***********수정**********/
+  protected void saveNewsData(List<KeywordModel> keywords) {
+    for (KeywordModel keyword : keywords) {
+      String query = keyword.getKeyword();
 
-      NaverNewsModel naverNews = naverNewsAPI.request(query, NEWS_SORTING, NEWS_DISPLAY);
+      NaverNewsModel naverNews = naverNewsAPI.request(query, NEWS_SORTING, DISPLAY);
       List<NaverNewsItems> newsItems = naverNews.getItems();
 
       for (NaverNewsItems item : newsItems) {
-        // Tue, 27 Nov 2018 18:35:00 +0900
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+        // Tue, 27 Nov 2018 18:35:00 +0900 (E, dd MMM yyyy hh:mm:ss 
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	//고쳐야 함 !!
+        item.setPubDate(format.toString());
+        //naverNewsRepository.save(item);	//NaverNews? NaverNewsItems?
       }
     }
   }
+  
+  protected void saveYoutubeData(List<KeywordModel> keywords) {
+	    for (KeywordModel keyword : keywords) {
+	      String query = keyword.getKeyword();
 
-  protected void saveTrendKeyword() {
+	      List<Youtube> youtubeItems = youtubeAPI.request(query, DISPLAY);
+	      
+	      for (Youtube item : youtubeItems) {
+	        youtubeRepository.save(item);
+	      }
+	    }
+	  }
+
+  protected List<KeywordModel> saveTrendKeyword() {
     TrendKeyword trendKeyword = trendKeywordAPI.request();
     if (trendKeyword == null)
       throw new NoContentsException("no contents");
@@ -67,5 +95,8 @@ public class TrendKeywordService {
       List<Keyword> keywordList = trendKeyword.toEntity();
       for (Keyword key : keywordList)
         keywordRepository.save(key);
+      
+      return trendKeyword.getKeywordList();
+      
   }
 }

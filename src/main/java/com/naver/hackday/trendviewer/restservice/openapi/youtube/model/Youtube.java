@@ -16,7 +16,7 @@ import javax.persistence.*;
 @ToString
 public class Youtube {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "youtube_id")
     private Long id;
     @Column(nullable = false)
