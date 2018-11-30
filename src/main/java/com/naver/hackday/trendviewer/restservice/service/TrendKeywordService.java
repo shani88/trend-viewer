@@ -44,7 +44,7 @@ public class TrendKeywordService {
   @Transactional
   public void collectData() {
 	  List<Keyword> keywords = loadKeyword();
-//    saveNewsData(keywords);
+    saveNewsData(keywords);
 
 	  for (Keyword keyword : keywords) {
 	    List<Youtube> youtubeList = loadYoutube(keyword.getName());

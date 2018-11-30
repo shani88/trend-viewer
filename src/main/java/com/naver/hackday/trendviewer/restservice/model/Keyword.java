@@ -39,7 +39,7 @@ public class Keyword{
     @Column(nullable = false)
     private int rank;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<NaverNews> naverNewsList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

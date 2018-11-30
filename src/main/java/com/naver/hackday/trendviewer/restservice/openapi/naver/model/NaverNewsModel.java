@@ -29,12 +29,7 @@ public class NaverNewsModel {
   private List<NaverNewsItems> items;
 
   LocalDateTime changeDateTimeFormat(String time) {
-    //  Tue, 27 Nov 2018 18:35:00 +0900
-    String formatedTime = time.substring(5, 24);
-    DateTimeFormatter df = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
-    return LocalDateTime.parse(formatedTime, df);
-
-    //    return LocalDateTime.parse(time);
+    return LocalDateTime.parse(time, DateTimeFormatter.RFC_1123_DATE_TIME);
   }
 
   public List<NaverNews> toEntity() {
