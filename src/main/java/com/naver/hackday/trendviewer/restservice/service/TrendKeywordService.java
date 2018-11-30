@@ -25,79 +25,78 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TrendKeywordService {
 
-  private static final Logger logger = LoggerFactory.getLogger(TrendKeywordService.class);
+	private static final Logger logger = LoggerFactory.getLogger(TrendKeywordService.class);
 
-  private static final String NEWS_SORTING = "date";
+	private static final String NEWS_SORTING = "date";
 
-  private static final int DISPLAY = 5;
+	private static final int DISPLAY = 5;
 
-  @Autowired
-  private NaverNewsAPI naverNewsAPI;
+	@Autowired
+	private NaverNewsAPI naverNewsAPI;
 
-  @Autowired
-  private YoutubeAPI youtubeAPI;
+	@Autowired
+	private YoutubeAPI youtubeAPI;
 
-  @Autowired
-  private TrendKeywordAPI trendKeywordAPI;
+	@Autowired
+	private TrendKeywordAPI trendKeywordAPI;
 
-  @Autowired
-  private KeywordRepository keywordRepository;
-  
-  @Autowired
-  private NaverNewsRepository naverNewsRepository;
-  
-  @Autowired
-  private YoutubeRepository youtubeRepository;
+	@Autowired
+	private KeywordRepository keywordRepository;
 
-  @Transactional
-  public void collectData() {
-	  List<Keyword> keywords = saveTrendKeyword();
-	  
-//	  saveNewsData(keywords);		//추가
-//	  saveYoutubeData(keywords);	//추가
-  }
+	@Autowired
+	private NaverNewsRepository naverNewsRepository;
 
-  /***********수정**********/
-  protected void saveNewsData(List<KeywordModel> keywords) {
-    for (KeywordModel keyword : keywords) {
-      String query = keyword.getKeyword();
+	@Autowired
+	private YoutubeRepository youtubeRepository;
 
-      NaverNewsModel naverNews = naverNewsAPI.request(query, NEWS_SORTING, DISPLAY);
-      List<NaverNewsItems> newsItems = naverNews.getItems();
+	@Transactional
+	public void collectData() {
+		List<Keyword> keywords = saveTrendKeyword();
+		
+		//saveNewsData(keywords);
+		requestYoutubeData(keywords);
+	}
 
-      for (NaverNewsItems item : newsItems) {
-        // Tue, 27 Nov 2018 18:35:00 +0900 (E, dd MMM yyyy hh:mm:ss 
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	//고쳐야 함 !!
-        item.setPubDate(format.toString());
-        //naverNewsRepository.save(item);	//NaverNews? NaverNewsItems?
-      }
-    }
-  }
-  
-  protected void saveYoutubeData(List<KeywordModel> keywords) {
-	    for (KeywordModel keyword : keywords) {
-	      String query = keyword.getKeyword();
+	protected void saveNewsData(List<KeywordModel> keywords) {
+		for (KeywordModel keyword : keywords) {
+			String query = keyword.getKeyword();
 
-	      List<Youtube> youtubeItems = youtubeAPI.request(query, DISPLAY);
-	      
-	      for (Youtube item : youtubeItems) {
-	        youtubeRepository.save(item);
-	      }
-	    }
-	  }
+			NaverNewsModel naverNews = naverNewsAPI.request(query, NEWS_SORTING, DISPLAY);
+			List<NaverNewsItems> newsItems = naverNews.getItems();
 
-  protected List<Keyword> saveTrendKeyword() {
-    TrendKeyword trendKeyword = trendKeywordAPI.request();
-    List<Keyword> savedKeywordList = new ArrayList<>();
+			for (NaverNewsItems item : newsItems) {
+				// Tue, 27 Nov 2018 18:35:00 +0900 (E, dd MMM yyyy hh:mm:ss
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 고쳐야 함 !!
+				item.setPubDate(format.toString());
+				// naverNewsRepository.save(item); //NaverNews? NaverNewsItems?
+			}
+		}
+	}
 
-    if (trendKeyword == null)
-      throw new NoContentsException("no contents");
+	/* DB에 youtube 검색 결과 받아와서 반환 */
+	protected List<List<Youtube>> requestYoutubeData(List<Keyword> keywords) {
+		List<List<Youtube>> returnList = new ArrayList<>();
+		for (Keyword keyword : keywords) {
+			String query = keyword.getName();
 
-      List<Keyword> keywordList = trendKeyword.toEntity();
-      for (Keyword key : keywordList)
-        savedKeywordList.add(keywordRepository.save(key));
-      
-      return savedKeywordList;
-      
-  }
+			List<Youtube> youtubeItems = youtubeAPI.request(query, DISPLAY);
+			returnList.add(youtubeItems);
+		}
+		return returnList;
+	}
+
+	protected List<Keyword> saveTrendKeyword() {
+		TrendKeyword trendKeyword = trendKeywordAPI.request();
+		List<Keyword> savedKeywordList = new ArrayList<>();
+		
+		if (trendKeyword == null)
+			throw new NoContentsException("no contents");
+
+		List<Keyword> keywordList = trendKeyword.toEntity();
+		for (Keyword key : keywordList)
+			savedKeywordList.add(keywordRepository.save(key));
+
+		return savedKeywordList;
+
+	}
 }
