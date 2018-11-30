@@ -4,6 +4,7 @@ import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,10 +39,10 @@ public class Keyword{
     @Column(nullable = false)
     private int rank;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<NaverNews> naverNewsList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Youtube> youtubeList = new ArrayList<>();
 
     @Builder

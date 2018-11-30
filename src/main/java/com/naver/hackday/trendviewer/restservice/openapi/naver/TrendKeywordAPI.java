@@ -26,7 +26,7 @@ public class TrendKeywordAPI {
 
   private final static Logger logger = LoggerFactory.getLogger(TrendKeywordAPI.class);
 
-  private final static String API_URL = "http://106.10.35.9/trendKeyword?sort=createTime";
+  private final static String API_URL = "http://106.10.35.9/trendKeyword?sort=createdTime,desc";
 
   @Value("${api.duration.connection-time}")
   private int CONNECTION_TIME;

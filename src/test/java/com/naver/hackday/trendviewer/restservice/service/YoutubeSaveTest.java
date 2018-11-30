@@ -1,30 +1,15 @@
 package com.naver.hackday.trendviewer.restservice.service;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
+import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
+import com.naver.hackday.trendviewer.restservice.repository.YoutubeRepository;
 import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.naver.hackday.trendviewer.restservice.model.Keyword;
-import com.naver.hackday.trendviewer.restservice.model.NaverNews;
-import com.naver.hackday.trendviewer.restservice.openapi.youtube.YoutubeAPI;
-import com.naver.hackday.trendviewer.restservice.openapi.youtube.YoutubeAPITest;
-import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
-import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
-import com.naver.hackday.trendviewer.restservice.repository.YoutubeRepository;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
