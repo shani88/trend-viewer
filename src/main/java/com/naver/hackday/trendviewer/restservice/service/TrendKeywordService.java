@@ -54,7 +54,7 @@ public class TrendKeywordService {
 		List<Keyword> keywords = saveTrendKeyword();
 		
 		//saveNewsData(keywords);
-		saveYoutubeData(keywords);
+		requestYoutubeData(keywords);
 	}
 
 	protected void saveNewsData(List<KeywordModel> keywords) {
@@ -73,7 +73,7 @@ public class TrendKeywordService {
 		}
 	}
 
-	/* DB에 youtube 검색 결과 받아옴 */
+	/* DB에 youtube 검색 결과 받아와서 반환 */
 	protected List<List<Youtube>> requestYoutubeData(List<Keyword> keywords) {
 		List<List<Youtube>> returnList = new ArrayList<>();
 		for (Keyword keyword : keywords) {
