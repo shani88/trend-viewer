@@ -1,13 +1,18 @@
 package com.naver.hackday.trendviewer.restservice.model;
 
 import java.time.LocalDateTime;
-import lombok.*;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "naver_news")
@@ -29,18 +34,11 @@ public class NaverNews {
     @Column(nullable = false)
     private LocalDateTime createdTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="keyword_id")
-    @JsonIgnore
-    private Keyword keyword;
-
     @Builder
-    public NaverNews(String title, String link, String description, LocalDateTime createdTime,
-        Keyword keyword) {
+    public NaverNews(String title, String link, String description, LocalDateTime createdTime) {
         this.title = title;
         this.link = link;
         this.description = description;
         this.createdTime = createdTime;
-        this.keyword = keyword;
     }
 }
