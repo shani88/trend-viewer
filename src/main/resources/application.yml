@@ -51,7 +51,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   datasource:
     url: jdbc:h2:mem:trend_viewer
     username: sa
