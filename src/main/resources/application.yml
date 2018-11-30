@@ -10,6 +10,7 @@ logging:
   file: /home1/logs/trendviewer/restservice.log
 
 api:
+  display: 5
   naver:
     news:
       client-id: vL0_aPitja6Sa27g8zjM

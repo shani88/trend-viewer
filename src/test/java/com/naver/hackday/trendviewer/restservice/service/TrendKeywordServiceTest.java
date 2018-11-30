@@ -1,8 +1,5 @@
 package com.naver.hackday.trendviewer.restservice.service;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import com.naver.hackday.trendviewer.restservice.model.Keyword;
 import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
 import java.util.List;
@@ -31,15 +28,11 @@ public class TrendKeywordServiceTest {
   }
 
   @Test
-  public void saveTrendKeywords() {
-    trendKeywordService.saveTrendKeyword();
-    List<Keyword> keywordList = keywordRepository.findAll();
-    assertThat(keywordList.size(), is(20));
-  }
-
-  @Test
   public void collectData() {
     trendKeywordService.collectData();
+    List<Keyword> keywordList = keywordRepository.findAll();
+
+    System.out.println(keywordList.size());
   }
 
 }

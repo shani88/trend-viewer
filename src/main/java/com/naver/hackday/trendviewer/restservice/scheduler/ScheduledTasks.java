@@ -16,14 +16,9 @@ public class ScheduledTasks {
   private TrendKeywordService trendKeywordService;
 
   // every 30minutes -> */30 * * * *
-//  @Scheduled(cron = "*/30 * * * *")
-//  public void collectDataScheduler() {
-//
-//  }
-
-  @Scheduled(fixedRate = 3000)
-  public void every3SecondsScheduler() {
-    logger.info("Hello Scheduler");
+  @Scheduled(cron = "0 0/30 * * * ?")
+  public void collectDataScheduler() {
+    trendKeywordService.collectData();
   }
 
 }
