@@ -8,6 +8,17 @@ logging:
     java.sql: DEBUG
   path: /home1/logs/trendviewer
   file: /home1/logs/trendviewer/restservice.log
+
+api:
+  naver:
+    news:
+      client-id: vL0_aPitja6Sa27g8zjM
+      client-secret: g5hvicyrBF
+  youtube:
+      api-key: AIzaSyBL2Zs3XK54xK7Ta3Nb6cqz54GvAlt_l2g
+  duration:
+    read-time: 5
+    connection-time: 5
 ---
 
 spring:

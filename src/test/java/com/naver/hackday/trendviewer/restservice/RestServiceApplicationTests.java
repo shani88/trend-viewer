@@ -1,24 +1,23 @@
 package com.naver.hackday.trendviewer.restservice;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.naver.hackday.trendviewer.restservice.model.Keyword;
 import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
 import com.naver.hackday.trendviewer.restservice.repository.TestRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Profile("dev")
 public class RestServiceApplicationTests {
     @Autowired
     TestRepository repository;
