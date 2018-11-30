@@ -1,10 +1,17 @@
 package com.naver.hackday.trendviewer.restservice.openapi.youtube.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.naver.hackday.trendviewer.restservice.model.Keyword;
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
 @Entity
@@ -26,8 +33,4 @@ public class Youtube {
     @Column(nullable = false)
     private String url;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="keyword_id")
-    @JsonIgnore
-    private Keyword keyword;
 }

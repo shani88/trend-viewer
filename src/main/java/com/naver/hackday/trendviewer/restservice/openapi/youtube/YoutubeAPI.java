@@ -13,17 +13,13 @@ import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
 import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,7 +27,8 @@ public class YoutubeAPI {
 
   private static final Logger logger = LoggerFactory.getLogger(YoutubeAPI.class);
 
-  private static final String API_KEY = "AIzaSyBL2Zs3XK54xK7Ta3Nb6cqz54GvAlt_l2g";
+  @Value("${api.youtube.api-key}")
+  private String API_KEY;
 
   private static final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
 

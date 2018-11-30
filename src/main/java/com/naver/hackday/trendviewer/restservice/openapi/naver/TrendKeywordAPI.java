@@ -6,13 +6,15 @@ import com.naver.hackday.trendviewer.restservice.openapi.exception.InternalAPISe
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.KeywordModel;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.TrendKeyword;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,12 @@ public class TrendKeywordAPI {
   private final static Logger logger = LoggerFactory.getLogger(TrendKeywordAPI.class);
 
   private final static String API_URL = "http://106.10.35.9/trendKeyword?sort=createTime";
+
+  @Value("${api.duration.connection-time}")
+  private int CONNECTION_TIME;
+
+  @Value("${api.duration.read-time}")
+  private int READ_TIME;
 
   public TrendKeyword request() {
     ResponseEntity<String> responseEntity = requestAPI();
@@ -48,11 +56,13 @@ public class TrendKeywordAPI {
   }
 
   protected ResponseEntity<String> requestAPI() {
-    RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<String> responseEntity = restTemplate.exchange(API_URL,
-        HttpMethod.GET, null, String.class);
+    RestTemplate restTemplate = new RestTemplateBuilder()
+        .setConnectTimeout(Duration.ofSeconds(CONNECTION_TIME))
+        .setReadTimeout(Duration.ofSeconds(READ_TIME))
+        .build();
 
-    return responseEntity;
+    return restTemplate.exchange(API_URL,
+          HttpMethod.GET, null, String.class);
   }
 
   private TrendKeyword mapToTrendKeyword(Map<String, Object> map) {
