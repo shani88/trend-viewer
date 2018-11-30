@@ -1,7 +1,6 @@
 package com.naver.hackday.trendviewer.restservice.service;
 
 import com.naver.hackday.trendviewer.restservice.model.Keyword;
-import com.naver.hackday.trendviewer.restservice.model.NaverNews;
 import com.naver.hackday.trendviewer.restservice.openapi.exception.NoContentsException;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.NaverNewsAPI;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.TrendKeywordAPI;
@@ -14,8 +13,8 @@ import com.naver.hackday.trendviewer.restservice.openapi.youtube.model.Youtube;
 import com.naver.hackday.trendviewer.restservice.repository.KeywordRepository;
 import com.naver.hackday.trendviewer.restservice.repository.NaverNewsRepository;
 import com.naver.hackday.trendviewer.restservice.repository.YoutubeRepository;
-
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +51,10 @@ public class TrendKeywordService {
 
   @Transactional
   public void collectData() {
-	  List<KeywordModel> keywords = saveTrendKeyword();
+	  List<Keyword> keywords = saveTrendKeyword();
 	  
-	  saveNewsData(keywords);		//추가
-	  saveYoutubeData(keywords);	//추가
+//	  saveNewsData(keywords);		//추가
+//	  saveYoutubeData(keywords);	//추가
   }
 
   /***********수정**********/
@@ -87,16 +86,18 @@ public class TrendKeywordService {
 	    }
 	  }
 
-  protected List<KeywordModel> saveTrendKeyword() {
+  protected List<Keyword> saveTrendKeyword() {
     TrendKeyword trendKeyword = trendKeywordAPI.request();
+    List<Keyword> savedKeywordList = new ArrayList<>();
+
     if (trendKeyword == null)
       throw new NoContentsException("no contents");
 
       List<Keyword> keywordList = trendKeyword.toEntity();
       for (Keyword key : keywordList)
-        keywordRepository.save(key);
+        savedKeywordList.add(keywordRepository.save(key));
       
-      return trendKeyword.getKeywordList();
+      return savedKeywordList;
       
   }
 }

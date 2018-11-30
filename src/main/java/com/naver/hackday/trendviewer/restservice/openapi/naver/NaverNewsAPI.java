@@ -2,6 +2,9 @@ package com.naver.hackday.trendviewer.restservice.openapi.naver;
 
 import com.naver.hackday.trendviewer.restservice.openapi.exception.InternalAPIServerErrorException;
 import com.naver.hackday.trendviewer.restservice.openapi.naver.model.NaverNewsModel;
+import java.time.Duration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,11 +18,17 @@ public class NaverNewsAPI {
 
   private static final String API_URL = "https://openapi.naver.com/v1/search/news.json";
 
-  private static final String CLIENT_ID = "vL0_aPitja6Sa27g8zjM";
+  @Value("${api.naver.news.client-id}")
+  private String CLIENT_ID;
 
-  private static final String CLIENT_SECRET = "g5hvicyrBF";
+  @Value("${api.naver.news.client-secret}")
+  private String CLIENT_SECRET;
 
-  private static int a = 0;
+  @Value("${api.duration.connection-time}")
+  private int CONNECTION_TIME;
+
+  @Value("${api.duration.read-time}")
+  private int READ_TIME;
 
   public NaverNewsModel request(String query, String sort, int display) {
     ResponseEntity<NaverNewsModel> naverNews = requestAPI(query, sort, display);
@@ -32,7 +41,11 @@ public class NaverNewsAPI {
 
   protected ResponseEntity<NaverNewsModel> requestAPI(String query, String sort, int display) {
     String requestUrl = createRequestUrl(query, sort, display);
-    RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate = new RestTemplateBuilder()
+        .setReadTimeout(Duration.ofSeconds(CONNECTION_TIME))
+        .setConnectTimeout(Duration.ofSeconds(READ_TIME))
+        .build();
+
     HttpHeaders header = new HttpHeaders();
     header.add("X-Naver-Client-Id", CLIENT_ID);
     header.add("X-Naver-Client-Secret", CLIENT_SECRET);
